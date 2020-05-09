@@ -36,61 +36,75 @@ def displayPage():
 			''')
 
 	docker_containers = sb.getoutput('sudo docker ps -a')
-
+		
+	docker_containers = docker_containers + "\n"	
+	
 	length = len(docker_containers)
 
 	start_index = 0
+
 	end_index = docker_containers.find('\n')   #Because docker ps -a uses '\n' for next line of information display
-
-	print('  ',docker_containers[start_index:end_index] )   #printing the heading
-
-	start_index = end_index + 1 #skipped '\n'
-
-	docker_containers =  docker_containers[ start_index : length ] 
 	
-	print("-----------------------------")
-	print(docker_containers)
-	print("-------------------------------")
+	#print('first find : ',end_index,'..',docker_containers[end_index],'@')	
+	
+	print('      ',docker_containers[start_index:end_index] )   #printing the heading
+
+	#start_index = end_index + 1 #skipped '\n'
+
+	#print('start_index : ',start_index,'..',docker_containers[start_index],'@')
+
+	docker_containers =  docker_containers[ end_index + 1 : length ] 
+	
+	length = len(docker_containers)
+	
+	#print("-----------------------------")
+	#print(docker_containers)
+	#print("-------------------------------")
 
 	f = 1
+	
+	#start_index = 0	
+	#print('next start_index : ',start_index,'..',docker_containers[start_index],'@')
 	
 
 	'''for i in repr(docker_containers):
 		print(i)'''
-	#end_index = docker_containers.find('\n')
-	#print('end_index : ',end_index)
+	end_index = docker_containers.find('\n')
+	#print('second find end_index : ',end_index)
 
-	while true  :   
+	while True  :   
 		#because at end when '\n' will not be found start_index will become 0 as start_index = end_index + 1 = -1 + 1 = 0
 		
-		print(start_index," - ",end_index)	
-		print("***",docker_containers[start_index],"***")
-		print("###",docker_containers[start_index],"###")	
+		#print(start_index," - ",end_index)	
+		#print("***",docker_containers[start_index],"***")
+		#print("###",docker_containers[start_index],"###")	
 
-		print('''<br><input type="radio" name="containerID" value="{}"  {}>'''.format(docker_containers[ end_index : docker_containers.find(' ')] ,'checked' if f == 1 else ' ' ) ,end='')
-                
-                #f += 1
-                #if f>=10:
-                 #   break
-
-		end_index = docker_containers.find('\n')
-				
-		#print('new end index : ',end_index)
+		print('''<br><input type="radio" name="containerID" value="{}"  {}>'''.format(docker_containers[ start_index : docker_containers.find(' ')] ,'checked' if f == 1 else ' ' ) ,end='')
+		                
 		print(docker_containers[ start_index : end_index ] )
-		print()
-		start_index = end_index + 1
 		
-		f = f+1
-
-		if f>=7 :
-			print(start_index," - ",end_index," - ",length)
+		docker_containers =  docker_containers[ end_index + 1: length ] 
+		
+		start_index = 0
+		end_index = docker_containers.find('\n')
+		length = len(docker_containers)
+		#print('new end index : ',end_index)
+		
+		#print()
+		
+		if end_index == -1 or end_index >= length :
+			print(' end_index : ',end_index)
+			print(' length : ',length,'good bye')
 			break
+		f = 2
+
+		'''if f>=7 :
+			print(start_index," - ",end_index," - ",length)
+			break'''
 
 	print('''
 			<br>
-			<button type='button' onclick = "deleteSelected()" >Delete Container</button>
-			<button type='button' onclick = "seeCompleteDetails()" >Inspect Container</button>
-			<button type='button' onclick = "createImage()" >Create image of Container</button><br>
+			<button type='submit' onClick = "deleteSelected()" >Delete Container</button>  <button type='button' onclick = "seeCompleteDetails()" >Inspect Container</button>  <button type='button' onclick = "createImage()" >Create image of Container</button><br>
 
 			<button type='button' onclick = "deleteAll()">Delete all Containers</button>
 			<button type='button' onclick = "createNew()">Create a New Container</button>
