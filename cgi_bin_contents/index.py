@@ -46,20 +46,45 @@ def displayPage():
 
 	start_index = end_index + 1 #skipped '\n'
 
-	docker_containers = docker_containers[	start_index : length ]
+	docker_containers =  docker_containers[ start_index : length ] 
+	
+	print("-----------------------------")
+	print(docker_containers)
+	print("-------------------------------")
 
 	f = 1
+	
 
-	while start_index < length  :
+	'''for i in repr(docker_containers):
+		print(i)'''
+	#end_index = docker_containers.find('\n')
+	#print('end_index : ',end_index)
+
+	while true  :   
+		#because at end when '\n' will not be found start_index will become 0 as start_index = end_index + 1 = -1 + 1 = 0
 		
-		print('''<input type="radio" name="containerID" value="{}"  {}>bridge<br>'''.format(docker_containers[ end_index : docker_containers.find(' ')] ,'<checked>' if f == 1 else ' ' ) )
+		print(start_index," - ",end_index)	
+		print("***",docker_containers[start_index],"***")
+		print("###",docker_containers[start_index],"###")	
+
+		print('''<br><input type="radio" name="containerID" value="{}"  {}>'''.format(docker_containers[ end_index : docker_containers.find(' ')] ,'checked' if f == 1 else ' ' ) ,end='')
+                
+                #f += 1
+                #if f>=10:
+                 #   break
 
 		end_index = docker_containers.find('\n')
-
+				
+		#print('new end index : ',end_index)
 		print(docker_containers[ start_index : end_index ] )
-
+		print()
 		start_index = end_index + 1
+		
+		f = f+1
 
+		if f>=7 :
+			print(start_index," - ",end_index," - ",length)
+			break
 
 	print('''
 			<br>
@@ -101,6 +126,8 @@ def deleteAll():
 
 def createNew():
 	print("I am here in createNew")
+
+displayPage()
 '''container = "sudo docker run -dit"
 
 imageName = form.getvalue('imageName')
